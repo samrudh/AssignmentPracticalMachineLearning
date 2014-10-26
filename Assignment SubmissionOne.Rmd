@@ -1,0 +1,47 @@
+---
+title: "Course Project : writeup"
+author: "samrudha kelkar"
+date: "Sunday, October 26, 2014"
+output: html_document
+---
+
+This is my submission towards Coursera Course on "Practical Machine Leraning" conducted by Rice University in Oct-Nov 2014
+
+Training Model:
+
+With the available training and testing data, I used **Random forest** method to train the model. I considered following things:
+
+1.Predictors present in testing data
+
+2.Typically "sufficient" sensors needed in motion prediction
+   +Gyrometer and accerometer data would be sufficient to train the model
+   
+3.Variance present with predictors
+
+Pre-processing:
+
+I used **PCA** method for preprocessing considering the large number of original predictors.
+*pcaComp factor* is chosen such that most of the variations are covered.
+
+It is said that Boosting combined with random forest produce better results. But I observed that Boosting with default parameters does not yeild significant details.
+Otherwise ensemble average ofboosting and random forest could be helpful.
+
+Summary of the final model:
+```{r}
+ModelFit3
+
+```
+
+
+Confusion matrix thus generated is as follows:
+```{r, echo=FALSE}
+ library(caret)
+ confusionMatrix(PredictionDummy5,testingDummy$classe)
+```
+
+
+One of the characteristic observation is that totalAccelArm is always <50 for classe "A":
+![alt text][1]
+
+[1]:C:\Users\Sam\Study\PracticalMachineLearning\AssinmentSubmission/AccelArm.png "Class A versus Accleration"
+
