@@ -5,7 +5,7 @@ date: "Sunday, October 26, 2014"
 output: html_document
 ---
 
-This is my submission towards Coursera Course on "Practical Machine Leraning" conducted by Rice University in Oct-Nov 2014
+This is my submission towards Coursera Course on "Practical Machine Leraning" conducted by John Hopkins Bloomberg School of Public Health in Oct-Nov 2014
 
 Training Model:
 
