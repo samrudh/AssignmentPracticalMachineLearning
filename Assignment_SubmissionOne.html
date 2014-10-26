@@ -62,13 +62,11 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>Training Model:</p>
 <p>With the available training and testing data, I used <strong>Random forest</strong> method to train the model. I considered following things:</p>
 <p>1.Predictors present in testing data</p>
-<p>2.Typically “sufficient” sensors needed in motion prediction +Gyrometer and accerometer data would be sufficient to train the model</p>
-<p>3.Variance present with predictors</p>
+<p>2.Typically “sufficient” sensors used in motion prediction + Gyrometer and accerometer data would be sufficient to train the model</p>
+<p>3.Variance of the predictors</p>
 <p>Pre-processing:</p>
 <p>I used <strong>PCA</strong> method for preprocessing considering the large number of original predictors. <em>pcaComp factor</em> is chosen such that most of the variations are covered.</p>
-<p>It is said that Boosting combined with random forest produce better results. But I observed that Boosting with default parameters does not yeild significant details. Otherwise ensemble average ofboosting and random forest could be helpful.</p>
-<p>Summary of the final model:</p>
-<pre class="r"><code>ModelFit3</code></pre>
+<p>Summary of the model:</p>
 <pre><code>## Random Forest 
 ## 
 ## 15698 samples
@@ -123,6 +121,60 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 ## Detection Rate         0.2834   0.1883   0.1794   0.1611   0.1769
 ## Detection Prevalence   0.2841   0.1896   0.1853   0.1636   0.1774
 ## Balanced Accuracy      0.9990   0.9906   0.9887   0.9869   0.9975</code></pre>
+<p>It is said that Boosting combined with random forest produce better results.</p>
+<p>I used information provided by boosting model about variance of predictors. Considering only high “informative” predictors I built another model.</p>
+<p>Computation of this model was fast as lesser predictors were involved and accuracy was improved.</p>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 1113    0    0    0    0
+##          B    0  752    0    0    0
+##          C    0    0  715    0    0
+##          D    0    0    0  647    0
+##          E    0    0    0    0  697
+## 
+## Overall Statistics
+##                                      
+##                Accuracy : 1          
+##                  95% CI : (0.9991, 1)
+##     No Information Rate : 0.2836     
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16  
+##                                      
+##                   Kappa : 1          
+##  Mcnemar's Test P-Value : NA         
+## 
+## Statistics by Class:
+## 
+##                      Class: A Class: B Class: C Class: D Class: E
+## Sensitivity            1.0000   1.0000   1.0000   1.0000   1.0000
+## Specificity            1.0000   1.0000   1.0000   1.0000   1.0000
+## Pos Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
+## Neg Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
+## Prevalence             0.2836   0.1916   0.1822   0.1649   0.1776
+## Detection Rate         0.2836   0.1916   0.1822   0.1649   0.1776
+## Detection Prevalence   0.2836   0.1916   0.1822   0.1649   0.1776
+## Balanced Accuracy      1.0000   1.0000   1.0000   1.0000   1.0000</code></pre>
+<pre><code>## Random Forest 
+## 
+## 15698 samples
+##     9 predictor
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## 
+## Summary of sample sizes: 15698, 15698, 15698, 15698, 15698, 15698, ... 
+## 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
+##   2     1         1      0.000149     0.000189
+##   5     1         1      0.000140     0.000177
+##   9     1         1      0.000173     0.000219
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 2.</code></pre>
 <p>One of the characteristic observation is that totalAccelArm is always &lt;50 for classe “A”: <img src="data:image/png;base64,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" title="Class A versus Accleration" alt="alt text" /></p>
 
 

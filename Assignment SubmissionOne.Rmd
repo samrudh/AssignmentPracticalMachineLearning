@@ -13,30 +13,41 @@ With the available training and testing data, I used **Random forest** method to
 
 1.Predictors present in testing data
 
-2.Typically "sufficient" sensors needed in motion prediction
-   +Gyrometer and accerometer data would be sufficient to train the model
+2.Typically "sufficient" sensors used in motion prediction
+   + Gyrometer and accerometer data would be sufficient to train the model
    
-3.Variance present with predictors
+3.Variance of the predictors
 
 Pre-processing:
 
 I used **PCA** method for preprocessing considering the large number of original predictors.
 *pcaComp factor* is chosen such that most of the variations are covered.
 
-It is said that Boosting combined with random forest produce better results. But I observed that Boosting with default parameters does not yeild significant details.
-Otherwise ensemble average ofboosting and random forest could be helpful.
 
-Summary of the final model:
-```{r}
+Summary of the model:
+```{r, echo=FALSE, background= '#8B0000'}
 ModelFit3
 
 ```
 
 
 Confusion matrix thus generated is as follows:
-```{r, echo=FALSE}
+```{r, echo=FALSE, background= '#8B0000'}
  library(caret)
  confusionMatrix(PredictionDummy5,testingDummy$classe)
+```
+
+It is said that Boosting combined with random forest produce better results. 
+
+I used information provided by boosting model about variance of predictors. Considering only high "informative" predictors I built another model.
+
+Computation of this model was fast as lesser predictors were involved and accuracy was improved.
+
+```{r, echo=FALSE , background= '#FAF0E6'}
+library(caret)
+confusionMatrix(PredictionDummy6,testingDummy$classe)
+ModelFit6
+
 ```
 
 
