@@ -1,4 +1,4 @@
-Coursera 
+Coursera Course by John Hopkins Bloomberg School of Public Health
 
 Course name:Practical Machine Learning
 
